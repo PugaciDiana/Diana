@@ -1,0 +1,115 @@
+<!doctype html>
+<html ng-app="purchaseApp">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+</head>
+<body ng-controller="purchaseController">
+    <div class="page-header">
+        <h1>Форма</h1>
+    </div>
+    <div class="panel">
+        <div class="form-inline">
+            <div class="form-group">
+                <div class="col-md-8">
+                
+                <b>Имя</b><input type="text" class="form-control" ng-model="text1" placeholder = "Имя" required/><br/>
+                <b>Фамилия</b><input type="text" class="form-control" ng-model="text2" placeholder = "Фамилия" required/><br/>
+                Дата рождения: <input type="date" ng-model="text3">
+                    <div ng-if = "datanaster">
+                    <h3>Ваша дата рождения: {{text3 | date : "d MMMM y" }}</h3>
+                  
+                    </div>
+                    <p><div id="today"></div></p>
+                    <br>
+
+                
+                
+             
+
+
+                </div>
+            </div>
+            <button class="btn btn-default"  ng-click="age(today, text3)">Расчитать возраст</button>
+
+                    <button class="btn btn-default" ng-click="addItem(text1,text2,text3)">Добавить</button>
+                  
+                </div>
+            </div>
+            <p><div id="Group"></div></p>
+        </div>
+        <h1>Все зарегистрированные</h1>
+      <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Фамилия</th>
+                    <th>Дата</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in list.items">
+                    <td>{{item.Name}}</td>
+                    <td>{{item.fam}}</td>
+                    <td>{{item.data | date : "d MMMM y"}}</td>
+                    
+                </tr>
+            </tbody>
+        </table>
+    
+        
+        
+
+
+    </div>
+ 
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script>
+var model = {
+    items: [
+        { Name: "Глеб", fam: "Петров" , data: "28.09.2001" }
+    ]
+};
+var today = new Date();
+var purchaseApp = angular.module("purchaseApp", []);
+    purchaseApp.controller("purchaseController", function ($scope) {
+    $scope.list = model;
+    $scope.age = function(today,text3){
+        var today = new Date();
+        var age = today.getFullYear() - text3.getFullYear();
+        document.getElementById("today").innerHTML = age;
+    }
+    
+
+    
+    $scope.addItem = function (text1,text2,text3,age,today) {
+        if(text1 !="" && text2 != "" ) // если текст установлен и введено число, то добавляем
+        {
+            $scope.list.items.push({ Name: text1, fam: text2, data: text3});
+        }else{
+            console.log("Enter value");
+        }
+      
+        if(age > 1 && age < 5){
+            var first = "записан в первую групп";
+            document.getElementById("Group").innerHTML = first;
+
+        }else if(age > 5 && age < 7){
+            var second = "записан во вторую групп";
+            document.getElementById("Group").innerHTML = second;
+
+        }else{
+            var third = "записан в третью группу групп";
+            document.getElementById("Group").innerHTML = third;
+        }
+    }
+    });
+    
+</script>
+
+</body>
+</html>
+
+        
